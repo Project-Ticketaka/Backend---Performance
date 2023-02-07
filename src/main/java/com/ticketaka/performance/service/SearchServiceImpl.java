@@ -18,13 +18,13 @@ public class SearchServiceImpl implements SearchService {
     @Transactional(readOnly = true)
     public Slice<PerformanceInfo> getPerformanceSliceByKeyword(String keyword, Pageable pageable) {
         Slice<Performance> performances = performanceRepository.findByPrfTitleContaining(keyword, pageable);
-        return performances.map(performance -> performance.toPerformanceInfo());
+        return performances.map(Performance::toPerformanceInfo);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Slice<PerformanceInfo> getPerformanceSliceByGenre(String genre, Pageable pageable) {
         Slice<Performance> performances = performanceRepository.findByPrfGenre(genre, pageable);
-        return performances.map(performance -> performance.toPerformanceInfo());
+        return performances.map(Performance::toPerformanceInfo);
     }
 }

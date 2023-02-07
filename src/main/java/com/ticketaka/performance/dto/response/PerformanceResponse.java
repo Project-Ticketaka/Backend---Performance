@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
+@Getter
 public class PerformanceResponse {
     private PerformanceDetailInfo performanceDetailInfo;
     private List<PrfSessionDTO> prfSessionList = new ArrayList<>();

@@ -41,7 +41,7 @@ public class Performance {
     @Column(name = "prf_crew")
     private String prfCrew;
 
-    @Column(name = "prf_runtime", nullable = false)
+    @Column(name = "prf_runtime")
     private String prfRuntime;
 
     @Column(name = "prf_prd_comp")
@@ -50,7 +50,7 @@ public class Performance {
     @Column(name = "prf_viewing_age", nullable = false)
     private String prfViewingAge;
 
-    @Column(name = "prf_ticket_price", nullable = false)
+    @Column(name = "prf_ticket_price")
     private String prfTicketPrice;
 
     @Column(name = "prf_poster", columnDefinition = "TEXT")
@@ -77,7 +77,7 @@ public class Performance {
     private LocalDateTime prfLoadedAt;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "performance", orphanRemoval = true)
-    private List<PrfSession> prfSessions = new ArrayList<>();
+    private List<PrfSession> prfSessionList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facility_id")
@@ -98,7 +98,7 @@ public class Performance {
                 .ticketPrice(ticketPriceDTO.from(prfTicketPrice))
                 .poster(prfPoster)
                 .story(prfStory)
-                .genre(prfGenre.toString())
+                .genre(prfGenre)
                 .styUrls(generateStyUrlList())
                 .state(prfState.toString())
                 .build();

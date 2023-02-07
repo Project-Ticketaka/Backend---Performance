@@ -16,11 +16,18 @@ public class TicketPriceDTO {
     private int price;
 
     public List<TicketPriceDTO> from(String prfTicketPrice) {
+        if(prfTicketPrice == null) {
+            return null;
+        }
         String[] seats = prfTicketPrice.split(", ");
         List<TicketPriceDTO> ticketPriceDTOS = new ArrayList<>();
         Arrays.stream(seats).forEach(seat -> {
             String [] s = seat.split("\\s");
-            ticketPriceDTOS.add(new TicketPriceDTO(s[0],Integer.parseInt(s[1].replaceAll("[^0-9]",""))));
+            if(s.length > 1) {
+                ticketPriceDTOS.add(new TicketPriceDTO(s[0],Integer.parseInt(s[1].replaceAll("[^0-9]",""))));
+            } else {
+                ticketPriceDTOS.add(new TicketPriceDTO(s[0],0));
+            }
         });
 
         return ticketPriceDTOS;

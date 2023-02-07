@@ -25,11 +25,11 @@ public class PrfSession {
     @Column(name = "prf_session_time", nullable = false)
     private String prfSessionTime;
 
-    @Column(name = "prf_remaining_seat", nullable = false)
-    private int prfRemainingSeat;
+    @Column(name = "remaining_seat", nullable = false)
+    private int remainingSeat;
 
-    @Column(name = "prf_total_seat", nullable = false)
-    private int prfTotalSeat;
+    @Column(name = "total_seat", nullable = false)
+    private int totalSeat;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id")
@@ -46,12 +46,12 @@ public class PrfSession {
 
     public PrfSessionSeatResponse toPrfSessionSeatResponse() {
         return PrfSessionSeatResponse.builder()
-                .remainingSeat(prfRemainingSeat)
-                .totalSeat(prfTotalSeat)
+                .remainingSeat(remainingSeat)
+                .totalSeat(totalSeat)
                 .build();
     }
 
     private boolean checkAvailability() {
-        return prfRemainingSeat > 0;
+        return remainingSeat > 0;
     }
 }

@@ -20,4 +20,13 @@ public class PrfSessionDTO {
 
     private boolean isAvailable;
 
+    @Override
+    public String toString() {
+        return "PrfSessionDTO{" +
+                "prfSessionId=" + prfSessionId +
+                ", prfSessionDate=" + prfSessionDate +
+                ", prfSessionTime='" + prfSessionTime + '\'' +
+                ", isAvailable=" + isAvailable +
+                '}';
+    }
 }
