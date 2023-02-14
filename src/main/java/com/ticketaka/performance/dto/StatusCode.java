@@ -14,7 +14,7 @@ public enum StatusCode {
 
     NO_VACANCY(204,"예약 가능한 좌석이 없습니다."),
 
-    SESSION_EXPIRED(204, "예약 요청이 만료되었습니다.");
+    NOT_ABLE_TO_CREATE(204, "예약을 완료할 수 없습니다.");
 
     private final int code;
     private final String message;

@@ -17,9 +17,9 @@ public class PerformanceDTO {
         private String prfId;
         private String title;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        private LocalDate start_date;
+        private LocalDate startDate;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        private LocalDate end_date;
+        private LocalDate endDate;
         private String cast;
         private String crew;
         private String runtime;
@@ -39,9 +39,9 @@ public class PerformanceDTO {
         private String prfId;
         private String title;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        private LocalDate start_date;
+        private LocalDate startDate;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        private LocalDate end_date;
+        private LocalDate endDate;
         private String viewingAge;
         private String genre;
         private String poster;
@@ -52,8 +52,8 @@ public class PerformanceDTO {
             return "PerformanceInfo{" +
                     "prfId='" + prfId + '\'' +
                     ", title='" + title + '\'' +
-                    ", start_date=" + start_date +
-                    ", end_date=" + end_date +
+                    ", start_date=" + startDate +
+                    ", end_date=" + endDate +
                     ", viewingAge='" + viewingAge + '\'' +
                     ", genre='" + genre + '\'' +
                     ", poster='" + poster + '\'' +

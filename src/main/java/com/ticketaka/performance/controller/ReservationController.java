@@ -31,12 +31,22 @@ public class ReservationController {
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
     }
 
+    @PostMapping("/withdraw")
+    public ResponseEntity<BaseResponse> withdrawReservation(@RequestBody WaitingListRequest request) {
+        try {
+            reservationService.removeUserFromWaitingList(request);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<BaseResponse> createReservation(@RequestBody ReservationRequest request) {
         try {
             reservationService.makeReservation(request);
         } catch (IllegalArgumentException e1) {
-            return ResponseEntity.ok(new BaseResponse(StatusCode.SESSION_EXPIRED));
+            return ResponseEntity.ok(new BaseResponse(StatusCode.NOT_ABLE_TO_CREATE));
         } catch (Exception e2) {
             System.err.println(e2);
         }

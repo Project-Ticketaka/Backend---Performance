@@ -42,6 +42,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public void removeUserFromWaitingList(WaitingListRequest request) throws Exception {
+        RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
+        wListRMapCache.remove(request.getMemberId());
+        wListRMapCache.clearExpire();
+    }
+
+    @Override
     @Transactional
     public void makeReservation(ReservationRequest request) throws IllegalArgumentException {
         RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
@@ -53,7 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
         Integer count = wListRMapCache.remove(request.getMemberId());
         wListRMapCache.clearExpire();
         if(count == null) {
-            throw new IllegalArgumentException("SESSION EXPIRED");
+            throw new IllegalArgumentException("NOT_ABLE_TO_CREATE");
         }
         PrfSession prfSession = prfSessionRMapCache.get(request.getPrfSessionId());
         prfSession.setRemainingSeat(count);
