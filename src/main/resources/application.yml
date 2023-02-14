@@ -26,4 +26,10 @@ spring:
         max-idle: 8
         max-active: 8
     port: 6379
-    host: localhost
+    host: 172.19.171.241
+
+  # cache
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true

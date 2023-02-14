@@ -23,8 +23,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'mysql:mysql-connector-java'
-	// redis 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.redisson:redisson:3.13.1'
+	implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 	//test를 위한 embedded redis
 	testImplementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'

@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface PerformanceRepository extends JpaRepository<Performance,String> {
     // 제목 중 keyword를 내포하는 공연목록을 조회
     @EntityGraph(attributePaths = {"facility"})
@@ -21,6 +23,6 @@ public interface PerformanceRepository extends JpaRepository<Performance,String>
     Slice<Performance> findByPrfGenre(String genre, Pageable pageable);
 
     @Override
-    @EntityGraph(attributePaths = {"facility","prfSessionList"})
+    @EntityGraph(attributePaths = {"facility", "prfSessionList"})
     Optional<Performance> findById(String prfId);
 }

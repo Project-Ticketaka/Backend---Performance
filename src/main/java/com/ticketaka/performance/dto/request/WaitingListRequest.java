@@ -1,10 +1,12 @@
 package com.ticketaka.performance.dto.request;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class CheckAvailabilityRequest {
+@AllArgsConstructor
+public class WaitingListRequest {
+    private String memberId;
     private int prfSessionId;
     private int count;
 }

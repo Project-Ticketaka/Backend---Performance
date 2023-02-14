@@ -1,10 +1,12 @@
 package com.ticketaka.performance.controller;
 
 import com.ticketaka.performance.dto.StatusCode;
+import com.ticketaka.performance.dto.request.WaitingListRequest;
 import com.ticketaka.performance.dto.response.BaseResponse;
 import com.ticketaka.performance.dto.response.PerformanceResponse;
 import com.ticketaka.performance.dto.response.PrfSessionSeatResponse;
 import com.ticketaka.performance.service.PerformanceService;
+import com.ticketaka.performance.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

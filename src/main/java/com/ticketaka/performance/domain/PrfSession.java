@@ -1,13 +1,18 @@
 package com.ticketaka.performance.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.ticketaka.performance.dto.PrfSessionDTO;
-import com.ticketaka.performance.dto.response.PrfSessionSeatResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -15,11 +20,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PrfSession {
+public class PrfSession implements Serializable {
     @Id
     private int prfSessionId;
 
     @Column(name = "prf_session_date", nullable = false)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate prfSessionDate;
 
     @Column(name = "prf_session_time", nullable = false)
@@ -33,6 +40,7 @@ public class PrfSession {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id")
+    @JsonBackReference
     private Performance performance;
 
     public PrfSessionDTO toPrfSessionDTO() {
@@ -40,18 +48,10 @@ public class PrfSession {
                 .prfSessionId(prfSessionId)
                 .prfSessionDate(prfSessionDate)
                 .prfSessionTime(prfSessionTime)
-                .isAvailable(checkAvailability())
                 .build();
     }
 
-    public PrfSessionSeatResponse toPrfSessionSeatResponse() {
-        return PrfSessionSeatResponse.builder()
-                .remainingSeat(remainingSeat)
-                .totalSeat(totalSeat)
-                .build();
-    }
-
-    private boolean checkAvailability() {
-        return remainingSeat > 0;
+    public void setRemainingSeat(int count) {
+        this.remainingSeat -= count;
     }
 }

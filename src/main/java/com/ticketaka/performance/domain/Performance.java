@@ -1,6 +1,13 @@
 package com.ticketaka.performance.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.ticketaka.performance.domain.constants.PrfOpenrun;
 import com.ticketaka.performance.domain.constants.PrfState;
 import com.ticketaka.performance.dto.PerformanceDTO.PerformanceDetailInfo;
@@ -30,9 +37,13 @@ public class Performance {
     private String prfTitle;
 
     @Column(name = "prf_start_date", nullable = false)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate prfStartDate;
 
     @Column(name = "prf_end_date")
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate prfEndDate;
 
     @Column(name = "prf_cast")
@@ -74,9 +85,12 @@ public class Performance {
     private PrfState prfState;
 
     @Column(name = "prf_loaded_at", nullable = false)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime prfLoadedAt;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "performance", orphanRemoval = true)
+    @JsonManagedReference
     private List<PrfSession> prfSessionList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -121,4 +135,10 @@ public class Performance {
         return new ArrayList<>(Arrays.asList(prfStyUrls.split(",//s")));
     }
 
+    @Override
+    public String toString() {
+        return "Performance{" +
+                "performanceId='" + performanceId + '\'' +
+                '}';
+    }
 }
