@@ -19,13 +19,8 @@ spring:
 
   # redis
   redis:
-    lettuce:
-      pool:
-        min-idle: 0
-        max-idle: 8
-        max-active: 8
-    host: ${REDIS_URL}
-    port: ${REDIS_PORT}
+    host: ${SPRING_REDIS_URL}
+    port: ${SPRING_REDIS_PORT}
 
   # cache
   cache:
