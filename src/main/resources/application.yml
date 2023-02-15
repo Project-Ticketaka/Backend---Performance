@@ -1,11 +1,11 @@
 
 spring:
-  # MySQL
+  # MariaDB
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/ticketaka?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    username: user
-    password: user
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
   # JPA
   jpa:
@@ -14,9 +14,10 @@ spring:
         show_sql: true
         format_sql: true
     hibernate:
-      ddl-auto: none
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     defer-datasource-initialization: true
+    database: mysql
 
   # redis
   redis:
@@ -25,8 +26,8 @@ spring:
         min-idle: 0
         max-idle: 8
         max-active: 8
-    port: 6379
-    host: 172.19.168.200
+    host: ${REDIS_URL}
+    port: ${REDIS_PORT}
 
   # cache
   cache:
