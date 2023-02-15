@@ -45,7 +45,13 @@ class ReservationControllerTest {
     void 예약_생성_성공() throws Exception {
         WaitingListRequest request = new WaitingListRequest("user1", 2, 3);
         reservationService.insertUserInWaitingList(request);
-        String content = objectMapper.writeValueAsString(new ReservationRequest("user1",2,3000));
+        String content = objectMapper.writeValueAsString(new ReservationRequest(
+                "user1",
+                "user1@email.com",
+                "PF132236",
+                "http://www.kopis.or.kr/upload/pfmPoster/PF_PF132236_160704_142630.gif",
+                2,
+                10000));
         mvc.perform(post("/performance/rsv/create")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))

@@ -26,10 +26,14 @@ spring:
         max-idle: 8
         max-active: 8
     port: 6379
-    host: 172.19.171.241
+    host: 172.19.168.200
 
   # cache
   cache:
     type: redis
     redis:
       cache-null-values: true
+
+reservation:
+  url: ${RESERVATION_URL}
+  port: ${RESERVATION_PORT}

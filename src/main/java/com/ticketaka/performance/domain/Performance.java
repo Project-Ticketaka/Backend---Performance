@@ -134,11 +134,4 @@ public class Performance {
     private List<String> generateStyUrlList() {
         return new ArrayList<>(Arrays.asList(prfStyUrls.split(",//s")));
     }
-
-    @Override
-    public String toString() {
-        return "Performance{" +
-                "performanceId='" + performanceId + '\'' +
-                '}';
-    }
 }

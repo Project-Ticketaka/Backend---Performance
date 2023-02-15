@@ -10,11 +10,4 @@ import lombok.Getter;
 public class PrfSessionSeatResponse {
     private int remainingSeat;
     private int totalSeat;
-
-    public PrfSessionSeatResponse from(int remainingSeat, int totalSeat) {
-        return PrfSessionSeatResponse.builder()
-                .remainingSeat(remainingSeat)
-                .totalSeat(totalSeat)
-                .build();
-    }
 }

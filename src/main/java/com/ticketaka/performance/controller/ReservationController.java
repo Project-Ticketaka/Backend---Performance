@@ -46,7 +46,13 @@ public class ReservationController {
         try {
             reservationService.makeReservation(request);
         } catch (IllegalArgumentException e1) {
-            return ResponseEntity.ok(new BaseResponse(StatusCode.NOT_ABLE_TO_CREATE));
+            if(e1.getMessage().equals("NOT_ABLE_TO_CREATE")) {
+                return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.NOT_ABLE_TO_CREATE));
+            }
+            if(e1.getMessage().equals("RESERVATION_FAILED")) {
+                return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.RESERVATION_FAILED));
+            }
+
         } catch (Exception e2) {
             System.err.println(e2);
         }

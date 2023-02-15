@@ -50,6 +50,10 @@ public class RedisTest {
         RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request1.getPrfSessionId());
         wListRMapCache.put(request1.getMemberId(),request1.getCount(),3,TimeUnit.SECONDS);
 
+        // then
+        PrfSession prfSession1 = prfSessionRMapCache.get(1);
+        System.out.println(prfSession1.getPerformance().getPerformanceId());
+
         int size = wListRMapCache.size();
         assertEquals(1,size);
         int count = wListRMapCache.get(request1.getMemberId());

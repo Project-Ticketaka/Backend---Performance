@@ -13,6 +13,7 @@ public class ReservationRequest {
     private String memberId;
     private String memberEmail;
     private String performanceId;
+    private String prfPoster;
     private int prfSessionId;
     private int price;
 }
