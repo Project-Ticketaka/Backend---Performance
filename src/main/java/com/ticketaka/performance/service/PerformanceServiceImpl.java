@@ -44,7 +44,9 @@ public class PerformanceServiceImpl implements PerformanceService {
                 .stream()
                 .map(prfSession -> {
                     PrfSessionDTO prfSessionDTO = prfSession.toPrfSessionDTO();
-                    prfSessionDTO.setAvailable((prfSession.getRemainingSeat()-getWListSize(prfSession.getPrfSessionId())) > 0);
+                    prfSessionDTO.setAvailable(
+                            (getPrfSessionFromRedis(prfSession.getPrfSessionId()).getRemainingSeat()
+                            - getWListSize(prfSession.getPrfSessionId())) > 0);
                     return prfSessionDTO;
                 })
                 .collect(Collectors.toList());

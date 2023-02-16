@@ -76,7 +76,7 @@ public class ReservationServiceImpl implements ReservationService {
         if(!Objects.equals(response.getBody(), "SUCCESS_RESERVATION")) {
             throw new IllegalArgumentException("RESERVATION_FAILED");
         }
-        prfSession.setRemainingSeat(count);
+        prfSession.setRemainingSeat(prfSession.getRemainingSeat()-count);
         prfSessionRMapCache.put(request.getPrfSessionId(),prfSession);
     }
 }
