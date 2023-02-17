@@ -23,7 +23,7 @@ import java.time.LocalDate;
 public class PrfSession implements Serializable {
     @Id
     @Column(name = "prf_session_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int prfSessionId;
 
     @Column(name = "prf_session_date", nullable = false)
