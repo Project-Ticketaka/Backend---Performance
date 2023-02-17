@@ -31,3 +31,6 @@ spring:
 reservation:
   url: ${RESERVATION_URL}
   port: ${RESERVATION_PORT}
+
+server:
+  port: ${SERVER_PORT}
