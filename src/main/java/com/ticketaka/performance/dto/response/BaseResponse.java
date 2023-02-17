@@ -6,15 +6,22 @@ import com.ticketaka.performance.dto.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
-//@JsonPropertyOrder({"code", "message", "data"})
+@JsonPropertyOrder({"code", "message", "data"})
 public class BaseResponse<T> {
-    private StatusCode code;
+    private int code;
+    private String description;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
-    public BaseResponse(StatusCode code) {
-        this.code = code;
+    public BaseResponse(StatusCode statusCode) {
+        this.code = statusCode.getCode();
+        this.description = statusCode.getDescription();
+    }
+
+    public BaseResponse(StatusCode statusCode,T data) {
+        this.code = statusCode.getCode();
+        this.description = statusCode.getDescription();
+        this.data = data;
     }
 }

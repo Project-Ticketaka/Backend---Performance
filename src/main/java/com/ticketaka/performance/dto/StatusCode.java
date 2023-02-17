@@ -12,16 +12,16 @@ public enum StatusCode {
     // DB에 연결할 수 없을 때
     DB_UNABLE_TO_CONNECT(500, "데이터 베이스에 연결할 수 없습니다."),
 
-    NO_VACANCY(204,"예약 가능한 좌석이 없습니다."),
+    NO_VACANCY(400,"예약 가능한 좌석이 없습니다."),
 
     NOT_ABLE_TO_CREATE(400, "예약을 완료할 수 없습니다."),
 
     RESERVATION_FAILED(400,"예약생성이 실패하였습니다.");
 
     private final int code;
-    private final String message;
-    StatusCode(int code, String message) {
+    private final String description;
+    StatusCode(int code, String description) {
         this.code = code;
-        this.message = message;
+        this.description = description;
     }
 }

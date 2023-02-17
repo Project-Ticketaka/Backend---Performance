@@ -4,13 +4,12 @@ import com.ticketaka.performance.dto.StatusCode;
 import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
 import com.ticketaka.performance.dto.response.BaseResponse;
+import com.ticketaka.performance.exception.CustomException;
+import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
 import com.ticketaka.performance.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,43 +18,22 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/check")
-    public ResponseEntity<BaseResponse> checkReservation(@RequestBody WaitingListRequest request) {
-        try {
-            reservationService.insertUserInWaitingList(request);
-        } catch (IllegalArgumentException e1) {
-            return ResponseEntity.ok(new BaseResponse(StatusCode.NO_VACANCY));
-        } catch (Exception e2) {
-            System.err.println(e2);
-        }
+    public ResponseEntity<BaseResponse> checkReservation(@RequestBody WaitingListRequest request){
+        reservationService.insertUserInWaitingList(request);
 
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
     }
 
     @PostMapping("/withdraw")
     public ResponseEntity<BaseResponse> withdrawReservation(@RequestBody WaitingListRequest request) {
-        try {
-            reservationService.removeUserFromWaitingList(request);
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+        reservationService.removeUserFromWaitingList(request);
+
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
     }
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponse> createReservation(@RequestBody ReservationRequest request) {
-        try {
-            reservationService.makeReservation(request);
-        } catch (IllegalArgumentException e1) {
-            if(e1.getMessage().equals("NOT_ABLE_TO_CREATE")) {
-                return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.NOT_ABLE_TO_CREATE));
-            }
-            if(e1.getMessage().equals("RESERVATION_FAILED")) {
-                return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.RESERVATION_FAILED));
-            }
-
-        } catch (Exception e2) {
-            System.err.println(e2);
-        }
+        reservationService.makeReservation(request);
 
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
     }

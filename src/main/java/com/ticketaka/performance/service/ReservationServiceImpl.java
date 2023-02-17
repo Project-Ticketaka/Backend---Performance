@@ -4,6 +4,10 @@ import com.ticketaka.performance.domain.PrfSession;
 import com.ticketaka.performance.dto.ReservationDTO;
 import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
+import com.ticketaka.performance.exception.CustomException;
+import com.ticketaka.performance.exception.CustomException.NoCreationAvailableException;
+import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
+import com.ticketaka.performance.exception.CustomException.ReservationFailedException;
 import com.ticketaka.performance.feign.ReservationFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RMapCache;
@@ -24,7 +28,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void insertUserInWaitingList(WaitingListRequest request) throws Exception {
+    public void insertUserInWaitingList(WaitingListRequest request) {
         RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
         /**
          *  vacancy = 잔여 좌석 - 대기열에 있는 모든 인원 수
@@ -42,12 +46,12 @@ public class ReservationServiceImpl implements ReservationService {
         if(vacancy >= count) {
             wListRMapCache.put(request.getMemberId(), count, 3, TimeUnit.MINUTES);
         } else {
-            throw new IllegalArgumentException("NO VACANCY");
+            throw new NoVacancyFoundException();
         }
     }
 
     @Override
-    public void removeUserFromWaitingList(WaitingListRequest request) throws Exception {
+    public void removeUserFromWaitingList(WaitingListRequest request) {
         RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
         wListRMapCache.remove(request.getMemberId());
         wListRMapCache.clearExpire();
@@ -55,7 +59,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationRequest request) throws Exception {
+    public void makeReservation(ReservationRequest request) {
         RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
         /**
          * 요청이 들어오면 해당 memberId에 상응하는 값을 가지고 와서 count에 저장 후 대기열에서 해당 memberId의 필드를 제거
@@ -66,7 +70,7 @@ public class ReservationServiceImpl implements ReservationService {
         Integer count = wListRMapCache.remove(request.getMemberId());
         wListRMapCache.clearExpire();
         if(count == null) {
-            throw new IllegalArgumentException("NOT_ABLE_TO_CREATE");
+            throw new NoCreationAvailableException();
         }
 
         PrfSession prfSession = prfSessionRMapCache.get(request.getPrfSessionId());
@@ -74,7 +78,7 @@ public class ReservationServiceImpl implements ReservationService {
         ResponseEntity<String> response = reservationFeignClient.createReservation(reservationDTO);
 
         if(!Objects.equals(response.getBody(), "SUCCESS_RESERVATION")) {
-            throw new IllegalArgumentException("RESERVATION_FAILED");
+            throw new ReservationFailedException();
         }
         prfSession.setRemainingSeat(prfSession.getRemainingSeat()-count);
         prfSessionRMapCache.put(request.getPrfSessionId(),prfSession);

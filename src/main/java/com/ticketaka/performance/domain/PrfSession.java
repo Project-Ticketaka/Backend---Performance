@@ -22,6 +22,8 @@ import java.time.LocalDate;
 @Builder
 public class PrfSession implements Serializable {
     @Id
+    @Column(name = "prf_session_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int prfSessionId;
 
     @Column(name = "prf_session_date", nullable = false)

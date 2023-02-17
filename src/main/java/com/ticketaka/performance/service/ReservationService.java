@@ -4,9 +4,9 @@ import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
 
 public interface ReservationService {
-    void insertUserInWaitingList(WaitingListRequest request) throws Exception;
+    void insertUserInWaitingList(WaitingListRequest request);
 
-    void removeUserFromWaitingList(WaitingListRequest request) throws Exception;
+    void removeUserFromWaitingList(WaitingListRequest request);
 
-    void makeReservation(ReservationRequest request) throws Exception;
+    void makeReservation(ReservationRequest request);
 }
