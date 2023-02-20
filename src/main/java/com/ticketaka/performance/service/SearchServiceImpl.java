@@ -18,7 +18,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Slice<PerformanceInfo> getPerformanceSliceByKeyword(String keyword, Pageable pageable) {
+    public Slice<PerformanceInfo> getPerformanceSliceByKeyword(String keyword, Pageable pageable) throws Exception {
         Slice<Performance> performances = performanceRepository.findByPrfTitleContaining(keyword, pageable);
         if(performances.isEmpty()) {
             throw new NoDataSearchedException();
@@ -28,7 +28,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Slice<PerformanceInfo> getPerformanceSliceByGenre(String genre, Pageable pageable) {
+    public Slice<PerformanceInfo> getPerformanceSliceByGenre(String genre, Pageable pageable) throws Exception {
         Slice<Performance> performances = performanceRepository.findByPrfGenre(genre, pageable);
         if(performances.isEmpty()) {
             throw new NoDataSearchedException();

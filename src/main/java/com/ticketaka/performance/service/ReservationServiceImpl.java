@@ -28,7 +28,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void insertUserInWaitingList(WaitingListRequest request) {
+    public void insertUserInWaitingList(WaitingListRequest request) throws Exception {
         RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
         /**
          *  vacancy = 잔여 좌석 - 대기열에 있는 모든 인원 수
@@ -51,7 +51,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void removeUserFromWaitingList(WaitingListRequest request) {
+    public void removeUserFromWaitingList(WaitingListRequest request) throws Exception {
         RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
         wListRMapCache.remove(request.getMemberId());
         wListRMapCache.clearExpire();
@@ -59,7 +59,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationRequest request) {
+    public void makeReservation(ReservationRequest request) throws Exception {
         RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
         /**
          * 요청이 들어오면 해당 memberId에 상응하는 값을 가지고 와서 count에 저장 후 대기열에서 해당 memberId의 필드를 제거

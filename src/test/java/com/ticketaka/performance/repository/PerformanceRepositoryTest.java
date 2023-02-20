@@ -25,7 +25,7 @@ class PerformanceRepositoryTest {
     private PerformanceRepository performanceRepository;
 
     @Test
-    void 제목으로_조회() {
+    void 제목으로_조회() throws Exception {
         // given
         String keyword = "그림";
         Pageable pageable1 = PageRequest.of(0,10, Sort.by(Sort.Direction.DESC,"prfLoadedAt"));

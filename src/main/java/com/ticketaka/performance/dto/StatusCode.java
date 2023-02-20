@@ -7,7 +7,7 @@ public enum StatusCode {
     // 성공
     OK(200,"성공"),
     // 검색 결과가 DB에 존재하지 않을 때
-    NO_DATA_SEARCHED(204,"검색어에 해당하는 공연을 찾을 수 없습니다."),
+    NO_DATA_SEARCHED(202,"검색어에 해당하는 공연을 찾을 수 없습니다."),
 
     // DB에 연결할 수 없을 때
     DB_UNABLE_TO_CONNECT(500, "데이터 베이스에 연결할 수 없습니다."),

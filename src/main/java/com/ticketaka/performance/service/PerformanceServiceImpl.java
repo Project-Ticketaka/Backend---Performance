@@ -31,7 +31,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Override
     @Transactional(readOnly = true)
-    public PerformanceResponse getPerformanceById(String prfId) {
+    public PerformanceResponse getPerformanceById(String prfId) throws Exception {
         Performance performance = performanceRepository.findById(prfId).get();
         PerformanceDetailInfo performanceDetailInfo = performance.toPerformanceDetailInfo();
         List<PrfSessionDTO> prfSessionDTOList = getPrfSessionDTOList(performance.getPrfSessionList());
@@ -54,7 +54,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Override
     @Transactional(readOnly = true)
-    public PrfSessionSeatResponse getPrfSessionById(int prfSessionId) {
+    public PrfSessionSeatResponse getPrfSessionById(int prfSessionId) throws Exception {
         PrfSession prfSession = getPrfSessionFromRedis(prfSessionId);
         int size = getWListSize(prfSessionId);
         int rSeat = prfSession.getRemainingSeat() - size;
