@@ -61,7 +61,7 @@ public class RedisConfig {
 
     @Bean
     @DependsOn(value = "redisClient")
-    public RMapCache<Integer, PrfSession> prfSessionRMapCache() {
+    public RMapCache<Integer, PrfSession> prfSessionRMapCache() throws Exception {
         return redissonClient().getMapCache("PrfSession", MapOptions.<Integer, PrfSession>defaults()
                 .loader(getPrfSessionMapLoader())
                 .writer(getPrfSessionMapWriter())
@@ -89,7 +89,7 @@ public class RedisConfig {
         };
     }
 
-    private MapLoader<Integer, PrfSession> getPrfSessionMapLoader() {
+    private MapLoader<Integer, PrfSession> getPrfSessionMapLoader() throws Exception{
         return new MapLoader<Integer, PrfSession>() {
             @Override
             public PrfSession load(Integer key) {

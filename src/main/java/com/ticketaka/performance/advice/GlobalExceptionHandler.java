@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.accepted().body(new BaseResponse(StatusCode.NO_DATA_SEARCHED));
     }
 
-    @ExceptionHandler(NoSuchElementException.class)
+    @ExceptionHandler({NoSuchElementException.class,NullPointerException.class})
     public ResponseEntity<BaseResponse> handleNoSuchElement() {
         log.info(StatusCode.NO_SUCH_ELEMENT.getDescription());
         return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.NO_SUCH_ELEMENT));
