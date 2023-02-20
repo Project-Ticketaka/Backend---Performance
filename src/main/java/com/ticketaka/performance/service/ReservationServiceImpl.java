@@ -10,6 +10,7 @@ import com.ticketaka.performance.exception.CustomException.NoVacancyFoundExcepti
 import com.ticketaka.performance.exception.CustomException.ReservationFailedException;
 import com.ticketaka.performance.feign.ReservationFeignClient;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RAtomicLong;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +81,7 @@ public class ReservationServiceImpl implements ReservationService {
         if(!Objects.equals(response.getBody(), "SUCCESS_RESERVATION")) {
             throw new ReservationFailedException();
         }
-        prfSession.setRemainingSeat(prfSession.getRemainingSeat()-count);
+        prfSession.setRemainingSeat(count);
         prfSessionRMapCache.put(request.getPrfSessionId(),prfSession);
     }
 }
