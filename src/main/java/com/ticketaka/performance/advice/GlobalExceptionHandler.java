@@ -38,26 +38,26 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoDataSearchedException.class)
-    public ResponseEntity<BaseResponse> handleNoDataSearched() {
+    public ResponseEntity<BaseResponse> handleNoDataSearched(Exception e) {
         log.info(StatusCode.NO_DATA_SEARCHED.getDescription());
         return ResponseEntity.accepted().body(new BaseResponse(StatusCode.NO_DATA_SEARCHED));
     }
 
     @ExceptionHandler({NoSuchElementException.class,NullPointerException.class})
-    public ResponseEntity<BaseResponse> handleNoSuchElement() {
-        log.info(StatusCode.NO_SUCH_ELEMENT.getDescription());
+    public ResponseEntity<BaseResponse> handleNoSuchElement(Exception e) {
+        log.info(e.getMessage());
         return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.NO_SUCH_ELEMENT));
     }
 
     @ExceptionHandler(JDBCConnectionException.class)
-    public ResponseEntity<BaseResponse> handleJDBCConnection() {
-        log.info(StatusCode.DB_UNABLE_TO_CONNECT.getDescription());
+    public ResponseEntity<BaseResponse> handleJDBCConnection(Exception e) {
+        log.info(e.getMessage());
         return ResponseEntity.internalServerError().body(new BaseResponse(StatusCode.DB_UNABLE_TO_CONNECT));
     }
 
     @ExceptionHandler(RedisException.class)
-    public ResponseEntity<BaseResponse> handleRedis() {
-        log.info(StatusCode.REDIS_TROUBLE_OCCURRED.getDescription());
+    public ResponseEntity<BaseResponse> handleRedis(Exception e) {
+        log.info(e.getMessage());
         return ResponseEntity.internalServerError().body(new BaseResponse(StatusCode.REDIS_TROUBLE_OCCURRED));
     }
 }
