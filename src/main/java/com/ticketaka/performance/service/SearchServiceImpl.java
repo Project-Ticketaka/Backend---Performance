@@ -2,6 +2,8 @@ package com.ticketaka.performance.service;
 
 import com.ticketaka.performance.domain.Performance;
 import com.ticketaka.performance.dto.PerformanceDTO.PerformanceInfo;
+import com.ticketaka.performance.exception.CustomException;
+import com.ticketaka.performance.exception.CustomException.NoDataSearchedException;
 import com.ticketaka.performance.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,9 @@ public class SearchServiceImpl implements SearchService {
     @Transactional(readOnly = true)
     public Slice<PerformanceInfo> getPerformanceSliceByKeyword(String keyword, Pageable pageable) {
         Slice<Performance> performances = performanceRepository.findByPrfTitleContaining(keyword, pageable);
+        if(performances.isEmpty()) {
+            throw new NoDataSearchedException();
+        }
         return performances.map(Performance::toPerformanceInfo);
     }
 
@@ -25,6 +30,9 @@ public class SearchServiceImpl implements SearchService {
     @Transactional(readOnly = true)
     public Slice<PerformanceInfo> getPerformanceSliceByGenre(String genre, Pageable pageable) {
         Slice<Performance> performances = performanceRepository.findByPrfGenre(genre, pageable);
+        if(performances.isEmpty()) {
+            throw new NoDataSearchedException();
+        }
         return performances.map(Performance::toPerformanceInfo);
     }
 }

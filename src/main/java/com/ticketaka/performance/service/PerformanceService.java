@@ -6,7 +6,7 @@ import com.ticketaka.performance.dto.response.PerformanceResponse;
 import com.ticketaka.performance.dto.response.PrfSessionSeatResponse;
 
 public interface PerformanceService {
-    PerformanceResponse getPerformanceById(String prfId);
+    PerformanceResponse getPerformanceById(String prfId) throws Exception;
 
-    PrfSessionSeatResponse getPrfSessionById(int prfSessionId);
+    PrfSessionSeatResponse getPrfSessionById(int prfSessionId) throws Exception;
 }

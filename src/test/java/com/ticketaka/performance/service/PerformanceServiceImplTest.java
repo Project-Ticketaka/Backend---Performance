@@ -15,12 +15,13 @@ class PerformanceServiceImplTest {
     @Autowired PerformanceService performanceService;
 
     @Test
-    void 공연_상세_불러오기() {
+    void 공연_상세_불러오기() throws Exception {
         // given
         // 공연 가격이 null로 들어옴
         String prfId = "PF202263";
 
         // when
+
         PerformanceResponse performanceResponse = performanceService.getPerformanceById(prfId);
 
         // then
@@ -31,7 +32,7 @@ class PerformanceServiceImplTest {
     }
 
     @Test
-    void 공연_회차_불러오기() {
+    void 공연_회차_불러오기() throws Exception {
         // given
         int prfSessionId = 5106;
         PrfSessionSeatResponse response = performanceService.getPrfSessionById(prfSessionId);

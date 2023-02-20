@@ -17,14 +17,14 @@ public class PerformanceController {
 
     @GetMapping("")
     public ResponseEntity<BaseResponse> getPerformanceById(
-            @RequestParam(value = "p") String performanceId) {
+            @RequestParam(value = "p") String performanceId) throws Exception {
         PerformanceResponse data = performanceService.getPerformanceById(performanceId);
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK,data));
     }
 
     @GetMapping("/session/{id}")
     public ResponseEntity<BaseResponse> getPrfSessionById(
-            @PathVariable(value = "id") int prfSessionId) {
+            @PathVariable(value = "id") int prfSessionId) throws Exception {
         PrfSessionSeatResponse data = performanceService.getPrfSessionById(prfSessionId);
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK,data));
     }

@@ -19,7 +19,7 @@ class SearchServiceImplTest {
     private SearchService searchService;
 
     @Test
-    void 제목으로_검색() {
+    void 제목으로_검색() throws Exception {
         // given
         String keyword = "그림";
         Pageable pageable = PageRequest.of(0,10, Sort.by(Sort.Direction.DESC,"prfLoadedAt"));
@@ -33,7 +33,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void 장르로_조회() {
+    void 장르로_조회() throws Exception {
         // given
         String genre = "대중음악";
         Pageable pageable = PageRequest.of(0,10, Sort.by(Sort.Direction.DESC,"prfLoadedAt"));

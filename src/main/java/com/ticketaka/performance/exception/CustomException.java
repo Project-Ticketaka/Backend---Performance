@@ -10,4 +10,7 @@ public class CustomException {
     public static class ReservationFailedException extends RuntimeException {
     }
 
+    public static class NoDataSearchedException extends RuntimeException {
+    }
+
 }
