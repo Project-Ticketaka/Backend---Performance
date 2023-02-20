@@ -45,19 +45,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({NoSuchElementException.class,NullPointerException.class})
     public ResponseEntity<BaseResponse> handleNoSuchElement(Exception e) {
-        log.info(e.getMessage());
+        e.printStackTrace();
         return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.NO_SUCH_ELEMENT));
     }
 
     @ExceptionHandler(JDBCConnectionException.class)
     public ResponseEntity<BaseResponse> handleJDBCConnection(Exception e) {
-        log.info(e.getMessage());
+        e.printStackTrace();
         return ResponseEntity.internalServerError().body(new BaseResponse(StatusCode.DB_UNABLE_TO_CONNECT));
     }
 
     @ExceptionHandler(RedisException.class)
     public ResponseEntity<BaseResponse> handleRedis(Exception e) {
-        log.info(e.getMessage());
+        e.printStackTrace();
         return ResponseEntity.internalServerError().body(new BaseResponse(StatusCode.REDIS_TROUBLE_OCCURRED));
     }
 }
