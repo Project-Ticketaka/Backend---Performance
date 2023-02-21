@@ -34,12 +34,12 @@ public class SearchController {
     }
 
     @GetMapping("/cat")
-    public ResponseEntity<BaseResponse> getPrfByGenre(
+    public BaseResponse getPrfByGenre(
             @RequestParam(name = "genre") String genre,
             @PageableDefault(size = 20, sort = "prfLoadedAt", direction = DESC) Pageable pageable) throws Exception {
 
         Slice<PerformanceInfo> data = searchService.getPerformanceSliceByGenre(genre,pageable);
 
-        return ResponseEntity.ok(new BaseResponse(StatusCode.OK,data));
+        return new BaseResponse(StatusCode.OK,data);
     }
 }
