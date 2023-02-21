@@ -16,16 +16,16 @@ public class PerformanceController {
     private final PerformanceService performanceService;
 
     @GetMapping("")
-    public ResponseEntity<BaseResponse> getPerformanceById(
+    public BaseResponse getPerformanceById(
             @RequestParam(value = "p") String performanceId) throws Exception {
         PerformanceResponse data = performanceService.getPerformanceById(performanceId);
-        return ResponseEntity.ok(new BaseResponse(StatusCode.OK,data));
+        return new BaseResponse(StatusCode.OK,data);
     }
 
     @GetMapping("/session/{id}")
-    public ResponseEntity<BaseResponse> getPrfSessionById(
+    public BaseResponse getPrfSessionById(
             @PathVariable(value = "id") int prfSessionId) throws Exception {
         PrfSessionSeatResponse data = performanceService.getPrfSessionById(prfSessionId);
-        return ResponseEntity.ok(new BaseResponse(StatusCode.OK,data));
+        return new BaseResponse(StatusCode.OK,data);
     }
 }

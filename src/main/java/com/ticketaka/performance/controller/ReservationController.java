@@ -18,23 +18,23 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/check")
-    public ResponseEntity<BaseResponse> checkReservation(@RequestBody WaitingListRequest request) throws Exception {
+    public BaseResponse checkReservation(@RequestBody WaitingListRequest request) throws Exception {
         reservationService.insertUserInWaitingList(request);
 
-        return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
+        return new BaseResponse(StatusCode.OK);
     }
 
     @PostMapping("/withdraw")
-    public ResponseEntity<BaseResponse> withdrawReservation(@RequestBody WaitingListRequest request) throws Exception {
+    public BaseResponse withdrawReservation(@RequestBody WaitingListRequest request) throws Exception {
         reservationService.removeUserFromWaitingList(request);
 
-        return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
+        return new BaseResponse(StatusCode.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponse> createReservation(@RequestBody ReservationRequest request) throws Exception {
+    public BaseResponse createReservation(@RequestBody ReservationRequest request) throws Exception {
         reservationService.makeReservation(request);
 
-        return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
+        return new BaseResponse(StatusCode.OK);
     }
 }

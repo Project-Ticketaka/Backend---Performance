@@ -24,13 +24,13 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/search")
-    public ResponseEntity<BaseResponse> getPrfByKeyword(
+    public BaseResponse getPrfByKeyword(
             @RequestParam(name = "keyword") String keyword,
             @PageableDefault(size = 20, sort = "prfLoadedAt", direction = DESC) Pageable pageable) throws Exception {
 
         Slice<PerformanceInfo> data = searchService.getPerformanceSliceByKeyword(keyword,pageable);
 
-        return ResponseEntity.ok(new BaseResponse(StatusCode.OK,data));
+        return new BaseResponse(StatusCode.OK,data);
     }
 
     @GetMapping("/cat")
