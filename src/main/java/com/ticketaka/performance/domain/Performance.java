@@ -132,6 +132,6 @@ public class Performance {
     }
 
     private List<String> generateStyUrlList() {
-        return new ArrayList<>(Arrays.asList(prfStyUrls.split(",//s")));
+        return new ArrayList<>(Arrays.asList(prfStyUrls.split(", ")));
     }
 }
