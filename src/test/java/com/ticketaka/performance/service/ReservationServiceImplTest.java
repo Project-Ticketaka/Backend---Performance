@@ -51,7 +51,6 @@ class ReservationServiceImplTest {
         WaitingListRequest request1 = new WaitingListRequest("user1",2,3);
         ReservationRequest req = new ReservationRequest(
                 "user1",
-                "user1@email.com",
                 "PF132236",
                 "http://www.kopis.or.kr/upload/pfmPoster/PF_PF132236_160704_142630.gif",
                 2,

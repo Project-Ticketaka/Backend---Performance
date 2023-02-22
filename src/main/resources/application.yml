@@ -19,8 +19,8 @@ spring:
 
   # redis
   redis:
-    host: ${SPRING_REDIS_URL}
-    port: ${SPRING_REDIS_PORT}
+    host: ${REDIS_URL}
+    port: ${REDIS_PORT}
 
   # cache
   cache:
@@ -29,8 +29,8 @@ spring:
       cache-null-values: true
 
 reservation:
-  url: ${RESERVATION_URL}
-  port: ${RESERVATION_PORT}
+  url: 172.31.231.39
+  port: 8083
 
 server:
   port: ${SERVER_PORT}

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="FeignClient", url="${reservation.url}:"+"${reservation.port}", path = "/reservation")
+@FeignClient(name="ReservationFeignClient", url="${reservation.url}:"+"${reservation.port}", path = "/reservation")
 public interface ReservationFeignClient {
     @PostMapping("/create")
     BaseResponse createReservation(@RequestBody ReservationDTO reservationDTO);

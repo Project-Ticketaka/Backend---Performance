@@ -54,6 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
     public void removeUserFromWaitingList(WaitingListRequest request) throws Exception {
         RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
         wListRMapCache.remove(request.getMemberId());
@@ -79,6 +80,7 @@ public class ReservationServiceImpl implements ReservationService {
         PrfSession prfSession = prfSessionRMapCache.get(request.getPrfSessionId());
         ReservationDTO reservationDTO = new ReservationDTO().from(request, count, prfSession);
         BaseResponse response = reservationFeignClient.createReservation(reservationDTO);
+        System.out.println(response);
 
         if(response.getCode() != StatusCode.OK.getCode()) {
             throw new ReservationFailedException();
