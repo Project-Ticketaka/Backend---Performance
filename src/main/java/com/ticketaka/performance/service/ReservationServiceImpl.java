@@ -2,8 +2,10 @@ package com.ticketaka.performance.service;
 
 import com.ticketaka.performance.domain.PrfSession;
 import com.ticketaka.performance.dto.ReservationDTO;
+import com.ticketaka.performance.dto.StatusCode;
 import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
+import com.ticketaka.performance.dto.response.BaseResponse;
 import com.ticketaka.performance.exception.CustomException;
 import com.ticketaka.performance.exception.CustomException.NoCreationAvailableException;
 import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
@@ -76,9 +78,9 @@ public class ReservationServiceImpl implements ReservationService {
 
         PrfSession prfSession = prfSessionRMapCache.get(request.getPrfSessionId());
         ReservationDTO reservationDTO = new ReservationDTO().from(request, count, prfSession);
-        ResponseEntity<String> response = reservationFeignClient.createReservation(reservationDTO);
+        BaseResponse response = reservationFeignClient.createReservation(reservationDTO);
 
-        if(!Objects.equals(response.getBody(), "SUCCESS_RESERVATION")) {
+        if(response.getCode() != StatusCode.OK.getCode()) {
             throw new ReservationFailedException();
         }
         prfSession.setRemainingSeat(count);

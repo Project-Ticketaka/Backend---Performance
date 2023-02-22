@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name="FeignClient", url="${reservation.url}:"+"${reservation.port}", path = "/reservation")
 public interface ReservationFeignClient {
     @PostMapping("/create")
-    ResponseEntity<String> createReservation(@RequestBody ReservationDTO reservationDTO);
+    BaseResponse createReservation(@RequestBody ReservationDTO reservationDTO);
 }
