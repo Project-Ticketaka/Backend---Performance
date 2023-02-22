@@ -29,8 +29,8 @@ spring:
       cache-null-values: true
 
 reservation:
-  url: 172.31.231.39
-  port: 8083
+  url: ${RESERVATION_URL}
+  port: ${RESERVATION_PORT}
 
 server:
   port: ${SERVER_PORT}
