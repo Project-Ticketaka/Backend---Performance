@@ -6,17 +6,16 @@ import com.ticketaka.performance.dto.StatusCode;
 import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
 import com.ticketaka.performance.dto.response.BaseResponse;
-import com.ticketaka.performance.util.exception.CustomException.NoCreationAvailableException;
-import com.ticketaka.performance.util.exception.CustomException.NoVacancyFoundException;
-import com.ticketaka.performance.util.exception.CustomException.ReservationFailedException;
-import com.ticketaka.performance.util.feign.ReservationFeignClient;
+import com.ticketaka.performance.exception.CustomException.NoCreationAvailableException;
+import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
+import com.ticketaka.performance.exception.CustomException.ReservationFailedException;
+import com.ticketaka.performance.feign.ReservationFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor

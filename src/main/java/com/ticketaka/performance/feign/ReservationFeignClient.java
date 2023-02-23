@@ -1,4 +1,4 @@
-package com.ticketaka.performance.util.feign;
+package com.ticketaka.performance.feign;
 
 
 import com.ticketaka.performance.dto.ReservationDTO;

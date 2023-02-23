@@ -6,7 +6,6 @@ import com.ticketaka.performance.dto.response.PerformanceResponse;
 import com.ticketaka.performance.dto.response.PrfSessionSeatResponse;
 import com.ticketaka.performance.service.PerformanceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor

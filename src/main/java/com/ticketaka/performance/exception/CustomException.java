@@ -1,4 +1,4 @@
-package com.ticketaka.performance.util.exception;
+package com.ticketaka.performance.exception;
 
 public class CustomException {
     public static class NoVacancyFoundException extends RuntimeException {

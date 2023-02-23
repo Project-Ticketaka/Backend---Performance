@@ -1,11 +1,11 @@
-package com.ticketaka.performance.util.advice;
+package com.ticketaka.performance.advice;
 
 import com.ticketaka.performance.dto.StatusCode;
 import com.ticketaka.performance.dto.response.BaseResponse;
-import com.ticketaka.performance.util.exception.CustomException.NoCreationAvailableException;
-import com.ticketaka.performance.util.exception.CustomException.NoDataSearchedException;
-import com.ticketaka.performance.util.exception.CustomException.NoVacancyFoundException;
-import com.ticketaka.performance.util.exception.CustomException.ReservationFailedException;
+import com.ticketaka.performance.exception.CustomException.NoCreationAvailableException;
+import com.ticketaka.performance.exception.CustomException.NoDataSearchedException;
+import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
+import com.ticketaka.performance.exception.CustomException.ReservationFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.JDBCConnectionException;
 import org.redisson.client.RedisException;
