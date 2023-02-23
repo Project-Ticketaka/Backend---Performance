@@ -4,11 +4,8 @@ import com.ticketaka.performance.dto.StatusCode;
 import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
 import com.ticketaka.performance.dto.response.BaseResponse;
-import com.ticketaka.performance.exception.CustomException;
-import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
 import com.ticketaka.performance.service.ReservationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor

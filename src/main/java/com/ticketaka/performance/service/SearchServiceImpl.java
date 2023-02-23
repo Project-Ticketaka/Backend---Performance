@@ -2,8 +2,7 @@ package com.ticketaka.performance.service;
 
 import com.ticketaka.performance.domain.Performance;
 import com.ticketaka.performance.dto.PerformanceDTO.PerformanceInfo;
-import com.ticketaka.performance.exception.CustomException;
-import com.ticketaka.performance.exception.CustomException.NoDataSearchedException;
+import com.ticketaka.performance.util.exception.CustomException.NoDataSearchedException;
 import com.ticketaka.performance.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

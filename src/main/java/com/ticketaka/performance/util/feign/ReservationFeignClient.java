@@ -1,10 +1,9 @@
-package com.ticketaka.performance.feign;
+package com.ticketaka.performance.util.feign;
 
 
 import com.ticketaka.performance.dto.ReservationDTO;
 import com.ticketaka.performance.dto.response.BaseResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 

@@ -6,20 +6,17 @@ import com.ticketaka.performance.dto.StatusCode;
 import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
 import com.ticketaka.performance.dto.response.BaseResponse;
-import com.ticketaka.performance.exception.CustomException;
-import com.ticketaka.performance.exception.CustomException.NoCreationAvailableException;
-import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
-import com.ticketaka.performance.exception.CustomException.ReservationFailedException;
-import com.ticketaka.performance.feign.ReservationFeignClient;
+import com.ticketaka.performance.util.exception.CustomException.NoCreationAvailableException;
+import com.ticketaka.performance.util.exception.CustomException.NoVacancyFoundException;
+import com.ticketaka.performance.util.exception.CustomException.ReservationFailedException;
+import com.ticketaka.performance.util.feign.ReservationFeignClient;
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RAtomicLong;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -45,7 +42,6 @@ public class ReservationServiceImpl implements ReservationService {
         int vacancy = remainingSeat - sum;
 
         int count = request.getCount();
-
         if(vacancy >= count) {
             wListRMapCache.put(request.getMemberId(), count, 3, TimeUnit.MINUTES);
         } else {
@@ -71,7 +67,9 @@ public class ReservationServiceImpl implements ReservationService {
          * reservation 서버로 요청을 보내고 ok 응답이 오지 않으면 RESERVATION_FAILED 예외를 던짐
          * session 의 잔여좌석을 count 만큼 감소시킴
          */
+        System.out.println(wListRMapCache.get(request.getMemberId()));
         Integer count = wListRMapCache.remove(request.getMemberId());
+        System.out.println(count);
         wListRMapCache.clearExpire();
         if(count == null) {
             throw new NoCreationAvailableException();
