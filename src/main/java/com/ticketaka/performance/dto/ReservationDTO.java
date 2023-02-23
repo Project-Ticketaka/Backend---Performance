@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class ReservationDTO {
     private String memberId;
     private String performanceId;
+    private String performanceTitle;
     private int reservationTicketCount;
     private LocalDate reservationDate;
     private String reservationTime;
@@ -26,6 +27,7 @@ public class ReservationDTO {
         return ReservationDTO.builder()
                 .memberId(request.getMemberId())
                 .performanceId(request.getPerformanceId())
+                .performanceTitle(request.getPrfTitle())
                 .reservationTicketCount(count)
                 .reservationDate(prfSession.getPrfSessionDate())
                 .reservationTime(prfSession.getPrfSessionTime())
