@@ -5,10 +5,7 @@ import com.ticketaka.performance.repository.PrfSessionRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.redisson.Redisson;
-import org.redisson.api.MapOptions;
-import org.redisson.api.RAtomicLong;
-import org.redisson.api.RMapCache;
-import org.redisson.api.RedissonClient;
+import org.redisson.api.*;
 import org.redisson.api.map.MapLoader;
 import org.redisson.api.map.MapWriter;
 import org.redisson.config.Config;
@@ -50,26 +47,33 @@ public class RedisConfig {
         this.port = port;
     }
 
-    @Bean("redisClient")
+    @Bean("redissonClient")
     public RedissonClient redissonClient() {
         Config redisConfig = new Config();
+        redisConfig.setNettyThreads(256);
         redisConfig.useSingleServer()
                 .setAddress("redis://"+host + ":" + port)
-                .setConnectionPoolSize(10)
-                .setConnectionMinimumIdleSize(10);
+                .setConnectionPoolSize(400)
+                .setConnectionMinimumIdleSize(50);
         return Redisson.create(redisConfig);
     }
 
     @Bean
-    @DependsOn(value = "redisClient")
+    @DependsOn(value = "redissonClient")
     public RMapCache<Integer, PrfSession> prfSessionRMapCache() throws Exception {
         return redissonClient().getMapCache("PrfSession", MapOptions.<Integer, PrfSession>defaults()
                 .loader(getPrfSessionMapLoader())
                 .writer(getPrfSessionMapWriter())
                 .writeMode(MapOptions.WriteMode.WRITE_BEHIND)
-                .writeBehindBatchSize(100)
+                .writeBehindBatchSize(1000)
                 .writeBehindDelay(10000)
         );
+    }
+
+    @Bean
+    @DependsOn(value = "redissonClient")
+    public RLock prfSessionLock() {
+        return redissonClient().getLock("PrfSession");
     }
 
     private MapWriter<Integer, PrfSession> getPrfSessionMapWriter() {

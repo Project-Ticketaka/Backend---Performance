@@ -34,7 +34,7 @@ class PerformanceServiceImplTest {
     @Test
     void 공연_회차_불러오기() throws Exception {
         // given
-        int prfSessionId = 5106;
+        int prfSessionId = 3;
         PrfSessionSeatResponse response = performanceService.getPrfSessionById(prfSessionId);
 
         System.out.println(response.getRemainingSeat());
