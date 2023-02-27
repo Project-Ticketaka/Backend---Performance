@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.RedisException;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -37,7 +38,7 @@ public class RedissonLockAop {
 
             log.info("Redisson lock key : {}" , key);
             return aopForTransaction.proceed(joinPoint);
-        } catch (Exception e) {
+        } catch (RedisException e) {
             e.printStackTrace();
         } finally {
             if (rLock.isHeldByCurrentThread()) {
@@ -45,7 +46,6 @@ public class RedissonLockAop {
                 rLock.unlock();
             }
 //            rLock.unlockAsync(Thread.currentThread().getId());
-//            rLock.unlock();
         }
 
         return true;

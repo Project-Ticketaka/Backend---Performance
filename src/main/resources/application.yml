@@ -15,7 +15,7 @@ spring:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
   # redis
   redis:
@@ -29,8 +29,8 @@ spring:
       cache-null-values: true
 
 reservation:
-  url: localhost
-  port: 8083
+  url: ${RESERVATION_URL}
+  port: ${RESERVATION_PORT}
 
 server:
   port: ${SERVER_PORT}
