@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -27,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class ReservationServiceImplTest {
     @Autowired ReservationService reservationService;
-    @Autowired PerformanceService performanceService;
     @Autowired RedissonClient redissonClient;
     @Autowired RMapCache<Integer, PrfSession> prfSessionRMapCache;
 
@@ -36,15 +37,17 @@ class ReservationServiceImplTest {
     void 대기열_테스트() throws Exception {
         // given
         RMapCache<Object, Object> wListMapCache = redissonClient.getMapCache("wList:2");
-        WaitingListRequest request1 = new WaitingListRequest("1",2,3);
-        WaitingListRequest request2 = new WaitingListRequest("2",2,5);
+        Map<String,String> header = new HashMap<>();
+        header.put("memberId","1");
+        WaitingListRequest request1 = new WaitingListRequest(2,3);
+        WaitingListRequest request2 = new WaitingListRequest(2,5);
 
         // when & then
-        reservationService.insertUserInWaitingList(request1);
+        reservationService.insertUserInWaitingList(header,request1);
         PrfSessionSeatResponse resp = reservationService.getPrfSessionById(2);
         assertEquals(197,resp.getRemainingSeat());
 
-        wListMapCache.put(request2.getMemberId(),request2.getCount(),3, TimeUnit.SECONDS);
+        wListMapCache.put(header.get("memberId"),request2.getCount(),3, TimeUnit.SECONDS);
         Thread.sleep(3500);
 
         resp = reservationService.getPrfSessionById(2);
@@ -57,9 +60,10 @@ class ReservationServiceImplTest {
     @Order(2)
     void 예약_테스트() throws Exception {
         // given
-        WaitingListRequest request1 = new WaitingListRequest("user1",2,3);
+        Map<String,String> header = new HashMap<>();
+        header.put("memberId","1");
+        WaitingListRequest request1 = new WaitingListRequest(2,3);
         ReservationRequest req = new ReservationRequest(
-                "1",
                 "PF132236",
                 "사랑",
                 "http://www.kopis.or.kr/upload/pfmPoster/PF_PF132236_160704_142630.gif",
@@ -67,8 +71,8 @@ class ReservationServiceImplTest {
                 10000);
 
         // when
-        reservationService.insertUserInWaitingList(request1);
-        reservationService.makeReservation(req);
+        reservationService.insertUserInWaitingList(header, request1);
+        reservationService.makeReservation(header, req);
 
         // then
         PrfSessionSeatResponse resp = reservationService.getPrfSessionById(2);
@@ -82,11 +86,12 @@ class ReservationServiceImplTest {
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         CountDownLatch countDownLatch = new CountDownLatch(numberOfThreads);
         for (int i = 1; i <= numberOfThreads; i++) {
-            int n1 = i;
+            Map<String,String> header = new HashMap<>();
+            header.put("memberId", String.valueOf(i));
             executorService.submit(() -> {
-                WaitingListRequest request = new WaitingListRequest(String.valueOf(n1), 3, 1);
+                WaitingListRequest request = new WaitingListRequest(3, 1);
                 try {
-                    reservationService.insertUserInWaitingList(request);
+                    reservationService.insertUserInWaitingList(header,request);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -107,11 +112,12 @@ class ReservationServiceImplTest {
         ExecutorService executorService1 = Executors.newFixedThreadPool(numberOfThreads);
         CountDownLatch countDownLatch1 = new CountDownLatch(numberOfThreads);
         for(int i = 1; i <= numberOfThreads; i++) {
-            int n1 = i;
+            Map<String,String> header = new HashMap<>();
+            header.put("memberId", String.valueOf(i));
             executorService1.submit(() -> {
-                WaitingListRequest request = new WaitingListRequest(String.valueOf(n1), 3, 1);
+                WaitingListRequest request = new WaitingListRequest( 3, 1);
                 try {
-                    reservationService.insertUserInWaitingList(request);
+                    reservationService.insertUserInWaitingList(header, request);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 } finally {
@@ -125,9 +131,11 @@ class ReservationServiceImplTest {
         CountDownLatch countDownLatch2 = new CountDownLatch(numberOfThreads);
         for (Object key : wListMapCache.keySet()) {
             String user = (String) key;
+            Map<String,String> header = new HashMap<>();
+            header.put("memberId",user);
             executorService1.submit(() -> {
                 try {
-                    reservationService.makeReservation(new ReservationRequest(user,"PF100000","사랑","poster",3,1));
+                    reservationService.makeReservation(header,new ReservationRequest("PF100000","사랑","poster",3,1));
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

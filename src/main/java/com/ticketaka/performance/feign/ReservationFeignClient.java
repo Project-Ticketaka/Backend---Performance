@@ -6,9 +6,12 @@ import com.ticketaka.performance.dto.response.BaseResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name="MemberFeignClient", url="${member.url}:"+"${member.port}", path = "/reservation")
+import java.util.Map;
+
+@FeignClient(name="ReservationFeignClient", url="${member.url}:"+"${member.port}", path = "/reservation")
 public interface ReservationFeignClient {
     @PostMapping("/create")
-    BaseResponse createReservation(@RequestBody ReservationDTO reservationDTO);
+    BaseResponse createReservation(@RequestHeader Map<String,String> header, @RequestBody ReservationDTO reservationDTO);
 }

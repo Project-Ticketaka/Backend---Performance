@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class ReservationRequest {
-    private String memberId;
     private String performanceId;
     private String prfTitle;
     private String prfPoster;

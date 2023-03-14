@@ -14,6 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,7 +36,9 @@ class ReservationControllerTest {
 
     @Test
     void 예약_가능여부_확인() throws Exception {
-        String content = objectMapper.writeValueAsString(new WaitingListRequest("user1", 2, 3));
+        Map<String,String> header = new HashMap<>();
+        header.put("memberId","1");
+        String content = objectMapper.writeValueAsString(new WaitingListRequest(2, 3));
         mvc.perform(post("/performance/rsv/check")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -43,16 +48,18 @@ class ReservationControllerTest {
 
     @Test
     void 예약_생성_성공() throws Exception {
-        WaitingListRequest request = new WaitingListRequest("user1", 2, 3);
-        reservationService.insertUserInWaitingList(request);
+        Map<String,String> header = new HashMap<>();
+        header.put("memberId","1");
+        WaitingListRequest request = new WaitingListRequest(2, 3);
+        reservationService.insertUserInWaitingList(header,request);
         String content = objectMapper.writeValueAsString(new ReservationRequest(
-                "user1",
                 "user1@email.com",
                 "PF132236",
                 "http://www.kopis.or.kr/upload/pfmPoster/PF_PF132236_160704_142630.gif",
                 2,
                 10000));
         mvc.perform(post("/performance/rsv/create")
+                        .header("header",header)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 public class ReservationDTO {
-    private String memberId;
     private String performanceId;
     private String performanceTitle;
     private int reservationTicketCount;
@@ -25,7 +24,6 @@ public class ReservationDTO {
 
     public ReservationDTO from(ReservationRequest request, int count, PrfSession prfSession) {
         return ReservationDTO.builder()
-                .memberId(request.getMemberId())
                 .performanceId(request.getPerformanceId())
                 .performanceTitle(request.getPrfTitle())
                 .reservationTicketCount(count)

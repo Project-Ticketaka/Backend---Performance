@@ -17,6 +17,7 @@ import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -45,8 +46,8 @@ public class ReservationServiceImpl implements ReservationService {
      */
     @Override
     @RedissonLock(key="PrfSessionId")
-    public void insertUserInWaitingList(WaitingListRequest request) throws Exception {
-        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
+    public void insertUserInWaitingList(Map<String,String> header, WaitingListRequest request) throws Exception {
+        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("memberid"));
         wListRMapCache.clearExpire();
         int remainingSeat = prfSessionRMapCache.get(request.getPrfSessionId()).getRemainingSeat();
         int sum = wListRMapCache.values().stream().mapToInt(i -> i).sum();
@@ -54,16 +55,16 @@ public class ReservationServiceImpl implements ReservationService {
 
         int count = request.getCount();
         if(vacancy >= count) {
-            wListRMapCache.put(request.getMemberId(), count, 3, TimeUnit.MINUTES);
+            wListRMapCache.put(header.get("memberid"), count, 3, TimeUnit.MINUTES);
         } else {
             throw new NoVacancyFoundException();
         }
     }
 
     @Override
-    public void removeUserFromWaitingList(WaitingListRequest request) throws Exception {
-        RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
-        wListRMapCache.remove(request.getMemberId());
+    public void removeUserFromWaitingList(Map<String,String> header, WaitingListRequest request) throws Exception {
+        RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("memberid"));
+        wListRMapCache.remove(header.get("memberid"));
     }
 
     /**
@@ -74,16 +75,16 @@ public class ReservationServiceImpl implements ReservationService {
      */
     @Override
     @RedissonLock(key="PrfSessionId", waitTime = 15L, leaseTime = 5L)
-    public void makeReservation(ReservationRequest request) throws Exception {
-        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
-        Integer count = wListRMapCache.remove(request.getMemberId());
+    public void makeReservation(Map<String,String> header, ReservationRequest request) throws Exception {
+        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("memberid"));
+        Integer count = wListRMapCache.remove(header.get("memberid"));
         if(count == null) {
             throw new NoCreationAvailableException();
         }
 
         PrfSession prfSession = prfSessionRMapCache.get(request.getPrfSessionId());
         ReservationDTO reservationDTO = new ReservationDTO().from(request, count, prfSession);
-        BaseResponse response = reservationFeignClient.createReservation(reservationDTO);
+        BaseResponse response = reservationFeignClient.createReservation(header, reservationDTO);
 
         if(response.getCode() != StatusCode.OK.getCode()) {
             throw new ReservationFailedException();
