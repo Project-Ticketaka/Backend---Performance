@@ -9,6 +9,7 @@ import com.ticketaka.performance.exception.CustomException.ReservationFailedExce
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.JDBCConnectionException;
 import org.redisson.client.RedisException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,44 +20,44 @@ import java.util.NoSuchElementException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoVacancyFoundException.class)
-    public BaseResponse handleNoVacancyFound() {
+    public ResponseEntity<BaseResponse> handleNoVacancyFound() {
         log.info(StatusCode.NO_VACANCY.getDescription());
-        return new BaseResponse(StatusCode.NO_VACANCY);
+        return ResponseEntity.accepted().body(new BaseResponse(StatusCode.NO_VACANCY));
     }
 
     @ExceptionHandler(NoCreationAvailableException.class)
-    public BaseResponse handleNoCreationAvailable() {
+    public ResponseEntity<BaseResponse> handleNoCreationAvailable() {
         log.info(StatusCode.NOT_ABLE_TO_CREATE.getDescription());
-        return new BaseResponse(StatusCode.NOT_ABLE_TO_CREATE);
+        return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.NOT_ABLE_TO_CREATE));
     }
 
     @ExceptionHandler(ReservationFailedException.class)
-    public BaseResponse handleReservationFailed() {
+    public ResponseEntity<BaseResponse> handleReservationFailed() {
         log.info(StatusCode.RESERVATION_FAILED.getDescription());
-        return new BaseResponse(StatusCode.RESERVATION_FAILED);
+        return ResponseEntity.internalServerError().body(new BaseResponse(StatusCode.RESERVATION_FAILED));
     }
 
     @ExceptionHandler(NoDataSearchedException.class)
-    public BaseResponse handleNoDataSearched(Exception e) {
+    public ResponseEntity<BaseResponse> handleNoDataSearched(Exception e) {
         log.info(StatusCode.NO_DATA_SEARCHED.getDescription());
-        return new BaseResponse(StatusCode.NO_DATA_SEARCHED);
+        return ResponseEntity.accepted().body(new BaseResponse(StatusCode.NO_DATA_SEARCHED));
     }
 
     @ExceptionHandler({NoSuchElementException.class,NullPointerException.class})
-    public BaseResponse handleNoSuchElement(Exception e) {
+    public ResponseEntity<BaseResponse> handleNoSuchElement(Exception e) {
         e.printStackTrace();
-        return new BaseResponse(StatusCode.NO_SUCH_ELEMENT);
+        return ResponseEntity.badRequest().body(new BaseResponse(StatusCode.NO_SUCH_ELEMENT));
     }
 
     @ExceptionHandler(JDBCConnectionException.class)
-    public BaseResponse handleJDBCConnection(Exception e) {
+    public ResponseEntity<BaseResponse> handleJDBCConnection(Exception e) {
         e.printStackTrace();
-        return new BaseResponse(StatusCode.DB_UNABLE_TO_CONNECT);
+        return ResponseEntity.internalServerError().body(new BaseResponse(StatusCode.DB_UNABLE_TO_CONNECT));
     }
 
     @ExceptionHandler(RedisException.class)
-    public BaseResponse handleRedis(Exception e) {
+    public ResponseEntity<BaseResponse> handleRedis(Exception e) {
         e.printStackTrace();
-        return new BaseResponse(StatusCode.REDIS_TROUBLE_OCCURRED);
+        return ResponseEntity.internalServerError().body(new BaseResponse(StatusCode.REDIS_TROUBLE_OCCURRED));
     }
 }

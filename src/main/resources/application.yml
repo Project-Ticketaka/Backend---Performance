@@ -28,9 +28,9 @@ spring:
     redis:
       cache-null-values: true
 
-reservation:
-  url: ${RESERVATION_URL}
-  port: ${RESERVATION_PORT}
+member:
+  url: ${MEMBER_URL}
+  port: ${MEMBER_PORT}
 
 server:
   port: ${SERVER_PORT}

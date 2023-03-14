@@ -6,6 +6,7 @@ import com.ticketaka.performance.dto.StatusCode;
 import com.ticketaka.performance.dto.request.ReservationRequest;
 import com.ticketaka.performance.dto.request.WaitingListRequest;
 import com.ticketaka.performance.dto.response.BaseResponse;
+import com.ticketaka.performance.dto.response.PrfSessionSeatResponse;
 import com.ticketaka.performance.exception.CustomException.NoCreationAvailableException;
 import com.ticketaka.performance.exception.CustomException.NoVacancyFoundException;
 import com.ticketaka.performance.exception.CustomException.ReservationFailedException;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +25,17 @@ public class ReservationServiceImpl implements ReservationService {
     private final RMapCache<Integer, PrfSession> prfSessionRMapCache;
     private final RedissonClient redissonClient;
     private final ReservationFeignClient reservationFeignClient;
+
+    @Override
+    @RedissonLock(key="PrfSessionId")
+    public PrfSessionSeatResponse getPrfSessionById(int prfSessionId) throws Exception {
+        PrfSession prfSession = prfSessionRMapCache.get(prfSessionId);
+        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + prfSessionId);
+        wListRMapCache.clearExpire();
+        int size = wListRMapCache.values().stream().mapToInt(i -> i).sum();
+        int rSeat = prfSession.getRemainingSeat() - size;
+        return new PrfSessionSeatResponse(rSeat,prfSession.getTotalSeat());
+    }
 
     /**
      *  vacancy = 잔여 좌석 - 대기열에 있는 모든 인원 수

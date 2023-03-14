@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PerformanceServiceImplTest {
 
     @Autowired PerformanceService performanceService;
+    @Autowired ReservationService reservationService;
 
     @Test
     void 공연_상세_불러오기() throws Exception {
@@ -35,7 +36,7 @@ class PerformanceServiceImplTest {
     void 공연_회차_불러오기() throws Exception {
         // given
         int prfSessionId = 3;
-        PrfSessionSeatResponse response = performanceService.getPrfSessionById(prfSessionId);
+        PrfSessionSeatResponse response = reservationService.getPrfSessionById(prfSessionId);
 
         System.out.println(response.getRemainingSeat());
         System.out.println(response.getTotalSeat());

@@ -41,13 +41,13 @@ class ReservationServiceImplTest {
 
         // when & then
         reservationService.insertUserInWaitingList(request1);
-        PrfSessionSeatResponse resp = performanceService.getPrfSessionById(2);
+        PrfSessionSeatResponse resp = reservationService.getPrfSessionById(2);
         assertEquals(197,resp.getRemainingSeat());
 
         wListMapCache.put(request2.getMemberId(),request2.getCount(),3, TimeUnit.SECONDS);
         Thread.sleep(3500);
 
-        resp = performanceService.getPrfSessionById(2);
+        resp = reservationService.getPrfSessionById(2);
         System.out.println(resp.getRemainingSeat());
         assertEquals(197,resp.getRemainingSeat());
 
@@ -71,7 +71,7 @@ class ReservationServiceImplTest {
         reservationService.makeReservation(req);
 
         // then
-        PrfSessionSeatResponse resp = performanceService.getPrfSessionById(2);
+        PrfSessionSeatResponse resp = reservationService.getPrfSessionById(2);
         System.out.println(resp.getRemainingSeat());
     }
 

@@ -26,19 +26,12 @@ public class PrfSessionDTO {
 
     private String prfSessionTime;
 
-    private boolean isAvailable;
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
-
     @Override
     public String toString() {
         return "PrfSessionDTO{" +
                 "prfSessionId=" + prfSessionId +
                 ", prfSessionDate=" + prfSessionDate +
                 ", prfSessionTime='" + prfSessionTime + '\'' +
-                ", isAvailable=" + isAvailable +
                 '}';
     }
 

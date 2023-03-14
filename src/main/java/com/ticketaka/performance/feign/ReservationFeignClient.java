@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="ReservationFeignClient", url="${reservation.url}:"+"${reservation.port}", path = "/reservation")
+@FeignClient(name="MemberFeignClient", url="${member.url}:"+"${member.port}", path = "/reservation")
 public interface ReservationFeignClient {
     @PostMapping("/create")
     BaseResponse createReservation(@RequestBody ReservationDTO reservationDTO);
