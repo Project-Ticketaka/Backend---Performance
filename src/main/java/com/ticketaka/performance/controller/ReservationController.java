@@ -23,21 +23,21 @@ public class ReservationController {
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK,data));
     }
 
-    @PostMapping("rsv/check")
+    @PostMapping("/rsv/check")
     public ResponseEntity<BaseResponse> checkReservation(@RequestBody WaitingListRequest request) throws Exception {
         reservationService.insertUserInWaitingList(request);
 
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
     }
 
-    @PostMapping("rsv/withdraw")
+    @PostMapping("/rsv/withdraw")
     public ResponseEntity<BaseResponse> withdrawReservation(@RequestBody WaitingListRequest request) throws Exception {
         reservationService.removeUserFromWaitingList(request);
 
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
     }
 
-    @PostMapping("rsv/create")
+    @PostMapping("/rsv/create")
     public ResponseEntity<BaseResponse> createReservation(@RequestBody ReservationRequest request) throws Exception {
         reservationService.makeReservation(request);
 
