@@ -47,7 +47,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @RedissonLock(key="PrfSessionId")
     public void insertUserInWaitingList(Map<String,String> header, WaitingListRequest request) throws Exception {
-        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("memberid"));
+        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("x-istio-jwt-sub"));
         wListRMapCache.clearExpire();
         int remainingSeat = prfSessionRMapCache.get(request.getPrfSessionId()).getRemainingSeat();
         int sum = wListRMapCache.values().stream().mapToInt(i -> i).sum();
@@ -55,7 +55,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         int count = request.getCount();
         if(vacancy >= count) {
-            wListRMapCache.put(header.get("memberid"), count, 3, TimeUnit.MINUTES);
+            wListRMapCache.put(header.get("x-istio-jwt-sub"), count, 3, TimeUnit.MINUTES);
         } else {
             throw new NoVacancyFoundException();
         }
@@ -63,8 +63,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void removeUserFromWaitingList(Map<String,String> header, WaitingListRequest request) throws Exception {
-        RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("memberid"));
-        wListRMapCache.remove(header.get("memberid"));
+        RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("x-istio-jwt-sub"));
+        wListRMapCache.remove(header.get("x-istio-jwt-sub"));
     }
 
     /**
@@ -76,8 +76,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @RedissonLock(key="PrfSessionId", waitTime = 15L, leaseTime = 5L)
     public void makeReservation(Map<String,String> header, ReservationRequest request) throws Exception {
-        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("memberid"));
-        Integer count = wListRMapCache.remove(header.get("memberid"));
+        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + header.get("x-istio-jwt-sub"));
+        Integer count = wListRMapCache.remove(header.get("x-istio-jwt-sub"));
         if(count == null) {
             throw new NoCreationAvailableException();
         }
