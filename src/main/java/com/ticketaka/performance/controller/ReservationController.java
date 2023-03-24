@@ -8,6 +8,7 @@ import com.ticketaka.performance.dto.response.PrfSessionSeatResponse;
 import com.ticketaka.performance.service.ReservationService;
 import jodd.util.collection.MapEntry;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 @RequestMapping("/performance")
 public class ReservationController {
     private final ReservationService reservationService;
@@ -32,8 +34,8 @@ public class ReservationController {
             @RequestBody WaitingListRequest request) throws Exception {
 
         for (Map.Entry entry : header.entrySet()) {
-            System.out.println("key: " + entry.getKey());
-            System.out.println("value: " + entry.getValue());
+            log.info("key: " + entry.getKey());
+            log.info("value: " + entry.getValue());
         }
 
         reservationService.insertUserInWaitingList(header, request);
