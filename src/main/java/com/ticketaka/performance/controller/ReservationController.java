@@ -6,6 +6,7 @@ import com.ticketaka.performance.dto.request.WaitingListRequest;
 import com.ticketaka.performance.dto.response.BaseResponse;
 import com.ticketaka.performance.dto.response.PrfSessionSeatResponse;
 import com.ticketaka.performance.service.ReservationService;
+import jodd.util.collection.MapEntry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,12 @@ public class ReservationController {
     public ResponseEntity<BaseResponse> checkReservation(
             @RequestHeader Map<String, String> header,
             @RequestBody WaitingListRequest request) throws Exception {
+
+        for (Map.Entry entry : header.entrySet()) {
+            System.out.println("key: " + entry.getKey());
+            System.out.println("value: " + entry.getValue());
+        }
+
         reservationService.insertUserInWaitingList(header, request);
 
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
