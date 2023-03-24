@@ -31,11 +31,6 @@ public class ReservationController {
             @RequestHeader Map<String, String> header,
             @RequestBody WaitingListRequest request) throws Exception {
 
-        for (Map.Entry entry : header.entrySet()) {
-            System.out.println("key: " + entry.getKey());
-            System.out.println("value: " + entry.getValue());
-        }
-
         reservationService.insertUserInWaitingList(header, request);
 
         return ResponseEntity.ok(new BaseResponse(StatusCode.OK));
