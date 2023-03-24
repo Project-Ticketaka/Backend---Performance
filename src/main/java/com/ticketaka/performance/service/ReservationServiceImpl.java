@@ -55,7 +55,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         int count = request.getCount();
         if(vacancy >= count) {
-            wListRMapCache.put(header.get("memberid"), count, 3, TimeUnit.MINUTES);
+            wListRMapCache.put(header.get("x-istio-jwt-sub"), count, 3, TimeUnit.MINUTES);
         } else {
             throw new NoVacancyFoundException();
         }
@@ -64,7 +64,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void removeUserFromWaitingList(Map<String,String> header, WaitingListRequest request) throws Exception {
         RMapCache<Object, Object> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
-        wListRMapCache.remove(header.get("memberid"));
+        wListRMapCache.remove(header.get("x-istio-jwt-sub"));
     }
 
     /**
@@ -77,7 +77,7 @@ public class ReservationServiceImpl implements ReservationService {
     @RedissonLock(key="PrfSessionId", waitTime = 15L, leaseTime = 5L)
     public void makeReservation(Map<String,String> header, ReservationRequest request) throws Exception {
         RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request.getPrfSessionId());
-        Integer count = wListRMapCache.remove(header.get("memberid"));
+        Integer count = wListRMapCache.remove(header.get("x-istio-jwt-sub"));
         if(count == null) {
             throw new NoCreationAvailableException();
         }
