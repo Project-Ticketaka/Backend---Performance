@@ -11,11 +11,13 @@ spring:
   jpa:
     database: mysql  # 추가 해준 부분
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # 추가 해준 부분
-    open-in-view: false
-    generate-ddl: true
     show-sql: true
+    generate-ddl: false
     hibernate:
       ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
 
   # redis
   redis:

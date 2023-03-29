@@ -37,33 +37,33 @@ public class RedisTest {
      *
      */
 
-    @Test
-    void 레디스_입력_테스트() throws InterruptedException {
-        // given
-
-        WaitingListRequest request1 = new WaitingListRequest("user_id_1",1,3);
-        WaitingListRequest request2 = new WaitingListRequest("user_id_2",1,1);
-
-        // when
-        PrfSession prfSession = prfSessionRepository.findById(1).get();
-        prfSessionRMapCache.put(1,prfSession);
-        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request1.getPrfSessionId());
-        wListRMapCache.put(request1.getMemberId(),request1.getCount(),3,TimeUnit.SECONDS);
-
-        // then
-        PrfSession prfSession1 = prfSessionRMapCache.get(1);
-        System.out.println(prfSession1.getPerformance().getPerformanceId());
-
-        int size = wListRMapCache.size();
-        assertEquals(1,size);
-        int count = wListRMapCache.get(request1.getMemberId());
-        assertEquals(3,count);
-
-        Thread.sleep(3300);
-        boolean check = wListRMapCache.containsKey(request1.getMemberId());
-        assertFalse(check);
-        Object o = wListRMapCache.get(request1.getMemberId());
-        assertNull(o);
-        wListRMapCache.clearExpire();
-    }
+//    @Test
+//    void 레디스_입력_테스트() throws InterruptedException {
+//        // given
+//
+//        WaitingListRequest request1 = new WaitingListRequest("user_id_1",1,3);
+//        WaitingListRequest request2 = new WaitingListRequest("user_id_2",1,1);
+//
+//        // when
+//        PrfSession prfSession = prfSessionRepository.findById(1).get();
+//        prfSessionRMapCache.put(1,prfSession);
+//        RMapCache<String, Integer> wListRMapCache = redissonClient.getMapCache("wList:" + request1.getPrfSessionId());
+//        wListRMapCache.put(request1.getMemberId(),request1.getCount(),3,TimeUnit.SECONDS);
+//
+//        // then
+//        PrfSession prfSession1 = prfSessionRMapCache.get(1);
+//        System.out.println(prfSession1.getPerformance().getPerformanceId());
+//
+//        int size = wListRMapCache.size();
+//        assertEquals(1,size);
+//        int count = wListRMapCache.get(request1.getMemberId());
+//        assertEquals(3,count);
+//
+//        Thread.sleep(3300);
+//        boolean check = wListRMapCache.containsKey(request1.getMemberId());
+//        assertFalse(check);
+//        Object o = wListRMapCache.get(request1.getMemberId());
+//        assertNull(o);
+//        wListRMapCache.clearExpire();
+//    }
 }

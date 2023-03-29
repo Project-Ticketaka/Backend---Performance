@@ -35,6 +35,23 @@ public class PerformanceDTO {
 
     @Builder
     @Getter
+    public static class RankedPerformanceInfo {
+        private String rNum;
+        private String prfId;
+        private String title;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+        private LocalDate startDate;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+        private LocalDate endDate;
+        private String viewingAge;
+        private String genre;
+        private String poster;
+        private String facilityName;
+    }
+
+
+    @Builder
+    @Getter
     public static class PerformanceInfo {
         private String prfId;
         private String title;
