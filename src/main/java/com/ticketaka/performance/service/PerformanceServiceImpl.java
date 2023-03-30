@@ -30,7 +30,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Override
     public List<RankedPerformanceInfo> getRankedPerformanceInfoList() {
-        LocalDate baseDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        LocalDate baseDate = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(1);
         log.info("BaseDate: " + baseDate.toString());
         List<RankedPerformanceInfo> rankedPerformanceInfoList = getRankedPerformanceByBaseTime(baseDate);
         if (rankedPerformanceInfoList.isEmpty()) {
