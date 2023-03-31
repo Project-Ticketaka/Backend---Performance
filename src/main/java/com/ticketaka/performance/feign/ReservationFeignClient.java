@@ -13,6 +13,6 @@ import java.util.Map;
 
 @FeignClient(name="ReservationFeignClient", url="${member.url}:"+"${member.port}", path = "/reservation")
 public interface ReservationFeignClient {
-    @PostMapping("/create")
-    BaseResponse createReservation(@HeaderMap Map<String,String> header, @RequestBody ReservationDTO reservationDTO);
+    @PostMapping(value = "/create")
+    BaseResponse createReservation(@RequestHeader("x-istio-jwt-sub") String sub, @RequestBody ReservationDTO reservationDTO);
 }

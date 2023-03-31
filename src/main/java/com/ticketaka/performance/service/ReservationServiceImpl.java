@@ -84,7 +84,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         PrfSession prfSession = prfSessionRMapCache.get(request.getPrfSessionId());
         ReservationDTO reservationDTO = new ReservationDTO().from(request, count, prfSession);
-        BaseResponse response = reservationFeignClient.createReservation(header, reservationDTO);
+        BaseResponse response = reservationFeignClient.createReservation(header.get("x-istio-jwt-sub"), reservationDTO);
 
         if(response.getCode() != StatusCode.OK.getCode()) {
             throw new ReservationFailedException();
