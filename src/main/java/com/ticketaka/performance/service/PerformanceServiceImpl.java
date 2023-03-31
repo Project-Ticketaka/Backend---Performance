@@ -45,7 +45,7 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Transactional(readOnly = true)
     List<RankedPerformanceInfo> getRankedPerformanceByBaseTime(LocalDate baseDate) {
         return prfRankRepository
-                .findByBaseDate(baseDate)
+                .findTop10ByBaseDateOrderByRNumAsc(baseDate)
                 .stream().map(PrfRank::toRankedPerformanceInfo)
                 .collect(Collectors.toList());
     }
