@@ -3,6 +3,7 @@ package com.ticketaka.performance.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.regex.Pattern;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j
 public class TicketPriceDTO {
     private String seatType;
     private int price;
@@ -24,11 +26,11 @@ public class TicketPriceDTO {
         String[] seats = prfTicketPrice.split(", ");
         List<TicketPriceDTO> ticketPriceDTOS = new ArrayList<>();
         Arrays.stream(seats).forEach(seat -> {
-            String pattern = "\\d+,\\d+원|\\d+원";
+            String pattern = "\\d+,\\d+원";
             Pattern p = Pattern.compile(pattern);
             Matcher m = p.matcher(seat);
             if (m.find()) {
-                String tmp = m.group(1);
+                String tmp = m.group();
                 String seatName = seat.replace(tmp, "").trim();
                 int price = Integer.parseInt(tmp.replaceAll("[^0-9]",""));
                 ticketPriceDTOS.add(new TicketPriceDTO(seatName,price));
