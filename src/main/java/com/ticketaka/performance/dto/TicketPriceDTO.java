@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
 @AllArgsConstructor
@@ -22,11 +24,16 @@ public class TicketPriceDTO {
         String[] seats = prfTicketPrice.split(", ");
         List<TicketPriceDTO> ticketPriceDTOS = new ArrayList<>();
         Arrays.stream(seats).forEach(seat -> {
-            String [] s = seat.split("\\s");
-            if(s.length > 1) {
-                ticketPriceDTOS.add(new TicketPriceDTO(s[0],Integer.parseInt(s[1].replaceAll("[^0-9]",""))));
+            String pattern = "\\d+,\\d+원|\\d+원";
+            Pattern p = Pattern.compile(pattern);
+            Matcher m = p.matcher(seat);
+            if (m.find()) {
+                String tmp = m.group(1);
+                String seatName = seat.replace(tmp, "").trim();
+                int price = Integer.parseInt(tmp.replaceAll("[^0-9]",""));
+                ticketPriceDTOS.add(new TicketPriceDTO(seatName,price));
             } else {
-                ticketPriceDTOS.add(new TicketPriceDTO(s[0],0));
+                ticketPriceDTOS.add(new TicketPriceDTO(seat,0));
             }
         });
 
