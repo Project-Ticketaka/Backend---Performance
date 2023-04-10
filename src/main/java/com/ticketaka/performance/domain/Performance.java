@@ -28,6 +28,7 @@ import java.util.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "performance", indexes = @Index(name = "idx_prf_genre", columnList = "prfGenre")) // 장르에다 index 걸기
 public class Performance {
     @Id
     @Column(name = "performance_id")
